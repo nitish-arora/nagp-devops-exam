@@ -39,8 +39,8 @@ pipeline {
 				rtMavenDeployer (
 					id: 'deployer',
 					serverId: '123456789@artifactory'
-					releaseRepo: 'devops-exam'
-					snapshotRepo: 'devops-exam'
+					releaseRepo: 'nagp-devops-exam'
+					snapshotRepo: 'nagp-devops-exam'
 				)
 				rtMavenBuild (
 					pom: 'pom.xml'
@@ -52,20 +52,6 @@ pipeline {
 				)
 			}
 		}
-		stage('Docker Image') {
-			steps {
-				bat 'docker build -t nitisharora31/devops-nagp-exam:%BUILD_NUMBER% --no-cache -f Dockerfile .'
-			}
-		}
-		stage('Check and Stop running container') {
-			steps {
-				bat '(docker stop c_devops_nagp_exam || "No such container is running") && (docker rm -fv c_devops_nagp_exam || "No such container is present in stopped state")'
-			}
-		}
-		stage('Run container') {
-			steps {
-				bat 'docker run --name c_devops_nagp_exam -d -p 9090:9090 nitisharora31/devops-nagp-exam:%BUILD_NUMBER%'
-			}
-		}
+
 	}
 }
