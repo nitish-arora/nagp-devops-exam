@@ -8,6 +8,13 @@ pipeline {
 		skipDefaultCheckout()
 	}
 	stages {
+		stage('Setting parameters') {
+			steps {
+				script {
+					properties([parameters([choice(choices: ['develop', 'feature'], description: 'branch basis build', name: 'branch')])])
+				}
+			}
+		}
 		stage('Checkout code') {
 			steps {
 				echo 'Checking out code'
@@ -38,13 +45,13 @@ pipeline {
 			steps {
 				rtMavenDeployer (
 					id: 'deployer',
-					serverId: '123456789@artifactory'
-					releaseRepo: 'devops-exam'
-					snapshotRepo: 'devops-exam'
+					serverId: '123456789@artifactory',
+					releaseRepo: 'nagp-devops-exam',
+					snapshotRepo: 'nagp-devops-exam'
 				)
-				rtMavenBuild (
-					pom: 'pom.xml'
-					goals: 'clean install'
+				rtMavenRun (
+					pom: 'pom.xml',
+					goals: 'clean install',
 					deployerId: 'deployer'
 				)
 				rtPublishBuildInfo(
@@ -52,7 +59,7 @@ pipeline {
 				)
 			}
 		}
-		stage('Docker Image') {
+				stage('Docker Image') {
 			steps {
 				bat 'docker build -t nitisharora31/devops-nagp-exam:%BUILD_NUMBER% --no-cache -f Dockerfile .'
 			}
@@ -67,5 +74,6 @@ pipeline {
 				bat 'docker run --name c_devops_nagp_exam -d -p 9090:9090 nitisharora31/devops-nagp-exam:%BUILD_NUMBER%'
 			}
 		}
+
 	}
 }
