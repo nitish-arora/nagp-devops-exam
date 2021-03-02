@@ -8,6 +8,13 @@ pipeline {
 		skipDefaultCheckout()
 	}
 	stages {
+		stage('Setting parameters') {
+			steps {
+				script {
+					properties([parameters([choice(choices: ['develop', 'feature'], description: 'branch basis build', name: 'branch')])])
+				}
+			}
+		}
 		stage('Checkout code') {
 			steps {
 				echo 'Checking out code'
