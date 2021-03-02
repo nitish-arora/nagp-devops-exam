@@ -38,13 +38,13 @@ pipeline {
 			steps {
 				rtMavenDeployer (
 					id: 'deployer',
-					serverId: '123456789@artifactory'
-					releaseRepo: 'nagp-devops-exam'
+					serverId: '123456789@artifactory',
+					releaseRepo: 'nagp-devops-exam',
 					snapshotRepo: 'nagp-devops-exam'
 				)
 				rtMavenBuild (
-					pom: 'pom.xml'
-					goals: 'clean install'
+					pom: 'pom.xml',
+					goals: 'clean install',
 					deployerId: 'deployer'
 				)
 				rtPublishBuildInfo(
