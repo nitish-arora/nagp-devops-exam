@@ -64,6 +64,13 @@ pipeline {
 				bat 'docker build -t nitisharora31/devops-nagp-exam:%BUILD_NUMBER% --no-cache -f Dockerfile .'
 			}
 		}
+		stage('Docker push image') {
+			steps {
+				withCredentials([usernamePassword(credentialsId: 'docker-hub', passwordVariable: 'docker_password', usernameVariable: 'docker_username')]) {
+				bat 'docker push nitisharora31/devops-nagp-exam:%BUILD_NUMBER%'
+}
+			}
+		}
 		stage('Check and Stop running container') {
 			steps {
 				bat '(docker stop c_devops_nagp_exam || "No such container is running") && (docker rm -fv c_devops_nagp_exam || "No such container is present in stopped state")'
