@@ -42,7 +42,7 @@ pipeline {
 					releaseRepo: 'nagp-devops-exam',
 					snapshotRepo: 'nagp-devops-exam'
 				)
-				rtMavenBuild (
+				rtMavenRun (
 					pom: 'pom.xml',
 					goals: 'clean install',
 					deployerId: 'deployer'
